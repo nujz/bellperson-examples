@@ -86,7 +86,25 @@ impl Circuit<Scalar> for MyCircuit {
         );
 
         let out = x7.zip_with(x5, |a, b| a + b + Scalar::from(3));
+
+
+        // choose 1 or 2 ?
+        //
+
+        // 1:
+        // 
         let out_var = cs.alloc_input(|| "out", || out.ok_or(AssignmentMissing))?;
+
+        // 2: 
+        //
+        // let out_var = cs.alloc(|| "out", || out.ok_or(AssignmentMissing))?;
+        // let out_input_var = cs.alloc_input(|| "out input", || out.ok_or(AssignmentMissing))?;
+        // cs.enforce(
+        //     || "input",
+        //     |lc| lc + out_input_var,
+        //     |lc| lc + CS::one(),
+        //     |lc| lc + out_var,
+        // );
 
         cs.enforce(
             || "(x^7 + x^5 + 3) * 1 = out",
